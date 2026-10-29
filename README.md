@@ -23,8 +23,12 @@ Sistem informasi pemantauan harga dan stok pangan Kabupaten Bengkulu Tengah (Lar
 composer install
 cp .env.example .env
 php artisan key:generate
-# sesuaikan DB di .env, lalu impor skema/SQL proyek atau jalankan migrasi terkait
+# sesuaikan DB di .env
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS pantau_pangan CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root pantau_pangan < database/dumps/pantau_pangan.sql
 php artisan serve
 ```
+
+Dump database lengkap ada di `database/dumps/pantau_pangan.sql`.
 
 Jangan commit file `.env`. Gunakan `.env.example` sebagai acuan.
