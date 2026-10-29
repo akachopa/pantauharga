@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MonitoringPoint extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['market_id', 'region_id', 'code', 'name', 'point_type', 'is_demo', 'is_active'];
 
     protected $casts = [

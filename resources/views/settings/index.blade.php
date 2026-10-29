@@ -77,7 +77,6 @@
                 ['key' => 'laporan', 'label' => 'Laporan', 'icon' => 'M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z'],
             ];
             $inputTags = $markets->take($roleKey === 'mitra' ? 1 : 2)->pluck('name');
-            $pointTags = $points->take($roleKey === 'mitra' ? 1 : 2)->pluck('name');
             $lihatScope = $roleKey === 'mitra' ? ($regions->first()->name ?? 'Kecamatan Karang Tinggi') : 'Seluruh kabupaten';
         @endphp
 
@@ -214,15 +213,17 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs text-slate-500 font-medium mb-1">Titik pantau</label>
-                                <div class="border border-slate-200 rounded-xl p-2 min-h-[42px] flex flex-wrap gap-1.5 items-center bg-white">
-                                    @foreach($pointTags as $tag)
-                                        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">
-                                            <span>{{ $tag }}</span>
-                                            <button type="button" data-remove-chip class="text-slate-400 hover:text-rose-600">×</button>
-                                        </span>
+                                <label class="block text-xs text-slate-500 font-medium mb-1">Titik pantau (lokasi input)</label>
+                                <input type="hidden" name="assign_points" value="1">
+                                <div class="border border-slate-200 rounded-xl p-2 max-h-40 overflow-y-auto custom-scrollbar space-y-1 bg-white">
+                                    @foreach($points as $point)
+                                        <label class="flex items-start gap-2 px-1.5 py-1 rounded-lg hover:bg-slate-50 text-xs text-slate-700 cursor-pointer">
+                                            <input type="checkbox" name="point_ids[]" value="{{ $point->id }}" @checked(in_array($point->id, $assignedPointIds, true)) class="mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500">
+                                            <span>{{ $point->name }}</span>
+                                        </label>
                                     @endforeach
                                 </div>
+                                <p class="mt-1 text-[11px] text-slate-400">Mitra dan operator hanya bisa menginput harga untuk titik yang dicentang.</p>
                             </div>
                         </div>
                     </div>

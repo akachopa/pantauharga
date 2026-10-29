@@ -5,6 +5,21 @@
 
 @push('head')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <style>
+        #radar-map { background: #F6F7F5; }
+        #radar-map .leaflet-tile-pane { filter: grayscale(0.6) contrast(0.95) brightness(1.04); }
+        .radar-kecamatan-label {
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+            color: #0D3B25;
+            font-weight: 700;
+            font-size: 11px;
+            text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff;
+            white-space: nowrap;
+        }
+        .radar-kecamatan-label::before { display: none; }
+    </style>
 @endpush
 
 @section('content')
@@ -85,11 +100,81 @@
     <script>
         (function () {
             const markers = @json($markers);
-            const map = L.map('radar-map').setView([{{ $centerLat }}, {{ $centerLng }}], 11);
+            const selectedRegionName = @json(optional($kecamatans->firstWhere('id', $selectedKecamatan))->name);
+            const regionIds = @json($kecamatans->mapWithKeys(fn ($kec) => [mb_strtoupper($kec->name) => $kec->id]));
+            const radarUrl = (regionId) => {
+                const url = new URL(@json(route('radar.index', array_filter(['date' => $selectedDate, 'commodity_id' => $selectedCommodity]))));
+                if (regionId) {
+                    url.searchParams.set('kecamatan_id', regionId);
+                }
+                return url.toString();
+            };
+            const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => (
+                { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]
+            ));
+            const map = L.map('radar-map', { zoomSnap: 0.25 }).setView([{{ $centerLat }}, {{ $centerLng }}], 10);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; OpenStreetMap'
             }).addTo(map);
+
+            fetch(@json(asset('geo/bengkulu-tengah-kecamatan.geojson')))
+                .then((response) => response.json())
+                .then((geojson) => {
+                    let selectedLayer = null;
+                    const isSelected = (feature) => selectedRegionName
+                        && feature.properties.nama.toUpperCase() === selectedRegionName.toUpperCase();
+
+                    const regionLayer = L.geoJSON(geojson, {
+                        style: (feature) => ({
+                            color: isSelected(feature) ? '#125032' : '#17663E',
+                            weight: isSelected(feature) ? 2.5 : 1.4,
+                            opacity: isSelected(feature) ? 1 : 0.7,
+                            fillColor: isSelected(feature) ? '#2E9C61' : '#D7EDDF',
+                            fillOpacity: isSelected(feature) ? 0.3 : 0.15,
+                        }),
+                        onEachFeature: (feature, layer) => {
+                            const regionKey = feature.properties.nama.toUpperCase();
+                            const regionId = regionIds[regionKey];
+                            const regionMarkers = markers.filter((m) => (m.region || '').toUpperCase() === regionKey);
+                            const pricedCount = regionMarkers.filter((m) => m.avg_price !== null).length;
+                            const alertCount = regionMarkers.filter((m) => m.tone === 'spike' || m.tone === 'stock').length;
+
+                            layer.bindTooltip(escapeHtml(feature.properties.nama), { permanent: true, direction: 'center', className: 'radar-kecamatan-label' });
+                            layer.bindPopup(
+                                `<div style="min-width:170px"><strong>Kec. ${escapeHtml(feature.properties.nama)}</strong>`
+                                + `<div style="color:#64748b;font-size:12px;margin-top:2px">${regionMarkers.length} pasar · ${pricedCount} ada observasi`
+                                + (alertCount ? ` · <span style="color:#e11d48;font-weight:600">${alertCount} perlu perhatian</span>` : '')
+                                + '</div>'
+                                + (regionId
+                                    ? (isSelected(feature)
+                                        ? `<a href="${radarUrl(null)}" style="display:inline-block;margin-top:8px;font-weight:600;color:#17663E">Tampilkan semua kecamatan &rarr;</a>`
+                                        : `<a href="${radarUrl(regionId)}" style="display:inline-block;margin-top:8px;font-weight:600;color:#17663E">Saring kecamatan ini &rarr;</a>`)
+                                    : '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Belum terdaftar sebagai wilayah pantau</div>')
+                                + '</div>'
+                            );
+                            layer.on('mouseover', () => layer.setStyle({ weight: 2.5, fillOpacity: 0.35, opacity: 1 }));
+                            layer.on('mouseout', () => regionLayer.resetStyle(layer));
+                            if (isSelected(feature)) {
+                                selectedLayer = layer;
+                            }
+                        },
+                    }).addTo(map);
+
+                    const outsideMask = [[[-90, -360], [-90, 360], [90, 360], [90, -360]]];
+                    geojson.features.forEach((feature) => {
+                        const polygons = feature.geometry.type === 'MultiPolygon' ? feature.geometry.coordinates : [feature.geometry.coordinates];
+                        polygons.forEach((polygon) => outsideMask.push(polygon[0].map((point) => [point[1], point[0]])));
+                    });
+                    regionLayer.bringToBack();
+                    L.polygon(outsideMask, { stroke: false, fillColor: '#F6F7F5', fillOpacity: 1, interactive: false }).addTo(map).bringToBack();
+
+                    const regencyBounds = regionLayer.getBounds();
+                    map.setMinZoom(map.getBoundsZoom(regencyBounds, false, L.point(32, 32)));
+                    map.setMaxBounds(regencyBounds.pad(0.08));
+                    map.options.maxBoundsViscosity = 1;
+                    map.fitBounds((selectedLayer || regionLayer).getBounds(), { padding: [16, 16] });
+                });
 
             const colors = { spike: '#e11d48', stock: '#d97706', stable: '#059669' };
 
@@ -108,14 +193,10 @@
                     : 'Belum ada observasi';
 
                 circle.bindPopup(
-                    `<strong>${m.name}</strong><br>${m.region || ''}<br>${priceText}<br>` +
+                    `<strong>${escapeHtml(m.name)}</strong><br>${escapeHtml(m.region)}<br>${priceText}<br>` +
                     `<a href="{{ url('/prices') }}?tab=tabulasi&market_id=${m.market_id}&date={{ $selectedDate }}">Buka tabulasi</a>`
                 );
             });
-
-            if (markers.length > 1) {
-                map.fitBounds(markers.map((m) => [m.lat, m.lng]), { padding: [24, 24] });
-            }
         })();
     </script>
 @endpush

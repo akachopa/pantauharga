@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PolicyCase extends Model
 {
     public $timestamps = false;
+
     protected $fillable = [
         'result_id',
         'dedupe_key',

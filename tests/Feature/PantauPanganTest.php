@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\ActionPlan;
 use App\Models\Commodity;
 use App\Models\Market;
 use App\Models\MonitoringPoint;
-use App\Models\Report;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class PantauPanganTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_dashboard_page_loads_successfully()
     {
         $response = $this->get('/dashboard');

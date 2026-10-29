@@ -310,11 +310,13 @@
                     <span>Laporan</span>
                 </a>
 
-                <a href="{{ route('settings.index') }}"
-                   class="{{ request()->routeIs('settings.*') ? $navActive : $navIdle }}">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    <span>Pengaturan</span>
-                </a>
+                @if($currentUser?->hasRole('admin'))
+                    <a href="{{ route('settings.index') }}"
+                       class="{{ request()->routeIs('settings.*') ? $navActive : $navIdle }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Pengaturan</span>
+                    </a>
+                @endif
             </nav>
         </div>
 
@@ -418,7 +420,9 @@
                         <div class="px-3 py-2 border-b border-slate-100">
                             <div class="text-xs font-bold text-slate-800">{{ $currentUser->name ?? 'Admin' }}</div>
                             <div class="text-[11px] text-brand-700 font-semibold">{{ $currentUser ? $currentUser->roleName() : 'Administrator' }}</div>
-                            <div class="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-wider">Beralih Peran (Multi-User)</div>
+                            @if($allUsers->isNotEmpty())
+                                <div class="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-wider">Beralih Peran (Mode Demo)</div>
+                            @endif
                         </div>
                         <div class="py-1 max-h-60 overflow-y-auto space-y-1 custom-scrollbar">
                             @foreach($allUsers as $u)
@@ -440,12 +444,21 @@
                             @endforeach
                         </div>
                         <div class="border-t border-slate-100 pt-1 mt-1">
-                            <a href="{{ route('settings.index', ['tab' => 'pengguna']) }}" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-brand-700 hover:bg-slate-50 rounded-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                                </svg>
-                                <span>Kelola Semua Pengguna</span>
-                            </a>
+                            @if($currentUser?->hasRole('admin'))
+                                <a href="{{ route('settings.index', ['tab' => 'pengguna']) }}" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-brand-700 hover:bg-slate-50 rounded-lg">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                    </svg>
+                                    <span>Kelola Semua Pengguna</span>
+                                </a>
+                            @endif
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

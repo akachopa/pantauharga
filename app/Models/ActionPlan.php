@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ActionPlan extends Model
 {
     public $timestamps = false;
+
     protected $fillable = [
         'title',
         'description',

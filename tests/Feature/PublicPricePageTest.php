@@ -10,6 +10,7 @@ use App\Models\ReportSeries;
 use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class PublicPricePageTest extends TestCase
@@ -99,7 +100,7 @@ class PublicPricePageTest extends TestCase
     {
         $row = $this->firstApprovedPriceRow();
 
-        $response = $this->get('/?date='.Carbon::parse($row->observed_at)->toDateString().'&commodity_id='.$row->commodity_id);
+        $response = $this->get('/tabel?date='.Carbon::parse($row->observed_at)->toDateString().'&commodity_id='.$row->commodity_id);
 
         $response->assertOk();
         $response->assertViewHas('priceItems', function ($items) use ($row) {
@@ -112,7 +113,7 @@ class PublicPricePageTest extends TestCase
     {
         $row = $this->firstApprovedPriceRow();
 
-        $response = $this->get('/?date='.Carbon::parse($row->observed_at)->toDateString().'&market_id='.$row->market_id);
+        $response = $this->get('/tabel?date='.Carbon::parse($row->observed_at)->toDateString().'&market_id='.$row->market_id);
 
         $response->assertOk();
         $response->assertViewHas('priceItems', function ($items) use ($row) {
@@ -125,7 +126,7 @@ class PublicPricePageTest extends TestCase
     {
         $row = $this->firstApprovedNearbyRow();
 
-        $response = $this->get('/?date='.Carbon::parse($row->observed_at)->toDateString().'&nearby_commodity_id='.$row->commodity_id);
+        $response = $this->get('/pasar-terdekat?date='.Carbon::parse($row->observed_at)->toDateString().'&nearby_commodity_id='.$row->commodity_id);
 
         $response->assertOk();
         $response->assertSee('Pasar Terdekat');
@@ -149,6 +150,64 @@ class PublicPricePageTest extends TestCase
 
         $this->get('/prices')->assertOk()->assertSee('TBS Kelapa Sawit');
         $this->get('/')->assertOk()->assertSee('TBS Kelapa Sawit');
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
+    public static function publicPageProvider(): array
+    {
+        return [
+            'pasar terdekat' => ['/pasar-terdekat', 'Pasar Terdekat'],
+            'tren' => ['/tren', 'Grafik harga'],
+            'tabel' => ['/tabel', 'Harga per pasar'],
+            'lapor harga' => ['/lapor-harga', 'Kirim laporan'],
+        ];
+    }
+
+    #[DataProvider('publicPageProvider')]
+    public function test_public_section_page_renders_on_its_own_url(string $url, string $heading): void
+    {
+        $response = $this->get($url);
+
+        $response->assertOk();
+        $response->assertSee($heading);
+        $response->assertSee('Beranda');
+        $response->assertDontSee('Input Data Baru');
+    }
+
+    public function test_public_section_page_rejects_unknown_filter(): void
+    {
+        $this->from('/tabel')->get('/tabel?market_id=999999')
+            ->assertRedirect('/tabel')
+            ->assertSessionHasErrors('market_id');
+    }
+
+    public function test_markets_page_provides_kecamatan_map_with_market_points(): void
+    {
+        $row = $this->firstApprovedNearbyRow();
+
+        $response = $this->get('/pasar-terdekat?date='.Carbon::parse($row->observed_at)->toDateString().'&nearby_commodity_id='.$row->commodity_id);
+
+        $response->assertOk();
+        $response->assertSee('Peta pasar Bengkulu Tengah');
+        $response->assertViewHas('mapData', function (array $mapData) use ($row): bool {
+            $pricedMarket = collect($mapData['markets'])->firstWhere('id', (int) $row->market_id);
+
+            return str_ends_with($mapData['geojsonUrl'], 'geo/bengkulu-tengah-kecamatan.geojson')
+                && $pricedMarket !== null
+                && $pricedMarket['price'] > 0
+                && collect($mapData['markets'])->every(fn (array $market): bool => $market['lat'] !== 0.0 && $market['lng'] !== 0.0);
+        });
+    }
+
+    public function test_kecamatan_boundary_file_covers_bengkulu_tengah(): void
+    {
+        $geojson = json_decode((string) file_get_contents(public_path('geo/bengkulu-tengah-kecamatan.geojson')), true);
+
+        $this->assertSame('FeatureCollection', $geojson['type']);
+        $this->assertCount(11, $geojson['features']);
+        $this->assertContains('Karang Tinggi', array_column(array_column($geojson['features'], 'properties'), 'nama'));
     }
 
     public function test_home_rejects_unknown_commodity_filter(): void

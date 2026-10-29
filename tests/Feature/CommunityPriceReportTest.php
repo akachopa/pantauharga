@@ -34,7 +34,7 @@ class CommunityPriceReportTest extends TestCase
             'note' => 'Harga kios berbeda dari papan resmi.',
         ]);
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('public.report'));
         $response->assertSessionHas('success', 'Laporan harga diterima. Data resmi tidak diubah; petugas akan meninjau masukan Anda.');
 
         $report = CommunityPriceReport::query()
@@ -79,7 +79,12 @@ class CommunityPriceReportTest extends TestCase
         $response->assertViewHas('commodityCards', function ($cards): bool {
             return $cards->every(fn (array $card): bool => abs($card['avg_price'] - 765432) > 1);
         });
-        $response->assertViewHas('priceItems', function ($items): bool {
+
+        $table = $this->get('/tabel?date='.$row->observed_date);
+
+        $table->assertOk();
+        $table->assertDontSee('765.432');
+        $table->assertViewHas('priceItems', function ($items): bool {
             return $items->every(fn ($item): bool => abs((float) $item->price - 765432) > 1);
         });
 

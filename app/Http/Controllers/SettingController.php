@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Market;
 use App\Models\MonitoringPoint;
 use App\Models\Organization;
+use App\Models\PointAssignment;
 use App\Models\Region;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +27,10 @@ class SettingController extends Controller
         $roles = Role::all();
         $organizations = Organization::all();
         $markets = Market::query()->orderBy('name')->get(['id', 'name']);
-        $points = MonitoringPoint::query()->orderBy('name')->get(['id', 'name']);
+        $points = MonitoringPoint::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']);
+        $assignedPointIds = $selectedSettingsUser
+            ? $this->activeAssignments($selectedSettingsUser->id)->pluck('point_id')->map(fn ($id): int => (int) $id)->all()
+            : [];
         $regions = Region::query()->orderBy('name')->get(['id', 'name']);
 
         $accessLogs = DB::table('access_change_logs')
@@ -59,6 +64,7 @@ class SettingController extends Controller
             'organizations',
             'markets',
             'points',
+            'assignedPointIds',
             'regions',
             'accessLogs',
             'auditLogs',
@@ -92,9 +98,15 @@ class SettingController extends Controller
 
     public function switchUser($id)
     {
+        abort_unless(config('auth.demo_auto_login'), 404);
+
         $user = User::findOrFail($id);
         Auth::login($user);
         session(['simulated_user_id' => $user->id]);
+
+        if ($user->hasRole('mitra')) {
+            return redirect()->route('mitra.dashboard')->with('success', "Beralih peran aktif sebagai: {$user->name} ({$user->roleName()})");
+        }
 
         return redirect()->back()->with('success', "Beralih peran aktif sebagai: {$user->name} ({$user->roleName()})");
     }
@@ -133,6 +145,8 @@ class SettingController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'role_id' => 'required|exists:roles,id',
+            'point_ids' => 'nullable|array',
+            'point_ids.*' => 'integer|exists:monitoring_points,id',
         ]);
 
         $user->update([
@@ -149,8 +163,13 @@ class SettingController extends Controller
         }
 
         $user->roles()->sync([$request->role_id]);
+        $user->update(['is_internal' => in_array((int) $request->role_id, [1, 2, 3, 4], true)]);
 
-        return redirect()->route('settings.index', ['tab' => 'pengguna'])
+        if ($request->boolean('assign_points')) {
+            $this->syncPointAssignments($user->id, array_map('intval', $request->input('point_ids', [])));
+        }
+
+        return redirect()->route('settings.index', ['tab' => 'pengguna', 'user' => $user->id])
             ->with('success', "Data pengguna {$user->name} berhasil diperbarui!");
     }
 
@@ -162,5 +181,46 @@ class SettingController extends Controller
         User::destroy($id);
 
         return redirect()->route('settings.index', ['tab' => 'pengguna'])->with('success', 'Pengguna berhasil dihapus!');
+    }
+
+    /**
+     * @return Collection<int, PointAssignment>
+     */
+    private function activeAssignments(int $userId): Collection
+    {
+        $today = now()->toDateString();
+
+        return PointAssignment::query()
+            ->where('user_id', $userId)
+            ->where('starts_on', '<=', $today)
+            ->where(fn ($query) => $query->whereNull('ends_on')->orWhere('ends_on', '>=', $today))
+            ->get();
+    }
+
+    /**
+     * Start assignments for newly checked points and end the ones that were unchecked.
+     *
+     * @param  list<int>  $pointIds
+     */
+    private function syncPointAssignments(int $userId, array $pointIds): void
+    {
+        $active = $this->activeAssignments($userId);
+        $yesterday = now()->subDay()->toDateString();
+
+        foreach ($active->whereNotIn('point_id', $pointIds) as $assignment) {
+            if ($assignment->starts_on->toDateString() > $yesterday) {
+                $assignment->delete();
+            } else {
+                $assignment->update(['ends_on' => $yesterday]);
+            }
+        }
+
+        foreach (array_diff($pointIds, $active->pluck('point_id')->map(fn ($id): int => (int) $id)->all()) as $pointId) {
+            PointAssignment::create([
+                'user_id' => $userId,
+                'point_id' => $pointId,
+                'starts_on' => now()->toDateString(),
+            ]);
+        }
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PolicyRuleCondition extends Model
 {
     public $timestamps = false;
+
     protected $fillable = [
         'group_id',
         'metric',

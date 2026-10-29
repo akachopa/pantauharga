@@ -114,4 +114,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Auto Login
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, internal pages sign visitors in as the simulated user
+    | (switchable from the profile menu) instead of requiring a password.
+    | Keep this disabled outside of demos.
+    |
+    */
+
+    'demo_auto_login' => (bool) env('AUTH_DEMO_AUTO_LOGIN', false),
+
 ];

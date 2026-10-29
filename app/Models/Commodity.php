@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Commodity extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['code', 'name', 'category', 'base_unit', 'icon', 'heir_category', 'reference_price', 'is_active'];
 
     protected $casts = [

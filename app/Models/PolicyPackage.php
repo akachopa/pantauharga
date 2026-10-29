@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PolicyPackage extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['organization_id', 'code', 'name', 'description', 'created_by', 'created_at'];
 
     public function organization()

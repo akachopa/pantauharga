@@ -54,17 +54,11 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if (Schema::hasTable('users')) {
-                $allUsers = User::with('roles')->where('is_active', true)->orderBy('id')->get();
+                $allUsers = config('auth.demo_auto_login')
+                    ? User::with('roles')->where('is_active', true)->orderBy('id')->get()
+                    : collect();
 
-                if (! Auth::check()) {
-                    $simulatedId = session('simulated_user_id', 1);
-                    $currentUser = User::with('roles')->find($simulatedId) ?? $allUsers->first();
-                    if ($currentUser) {
-                        Auth::login($currentUser);
-                    }
-                } else {
-                    $currentUser = Auth::user();
-                }
+                $currentUser = Auth::user();
 
                 if ($currentUser && Schema::hasTable('v_user_visible_menus')) {
                     $visibleMenus = DB::table('v_user_visible_menus')

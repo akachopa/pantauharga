@@ -66,7 +66,7 @@ class CommunityPriceReportController extends Controller
         ]);
 
         return redirect()
-            ->route('home')
+            ->route('public.report')
             ->with('success', 'Laporan harga diterima. Data resmi tidak diubah; petugas akan meninjau masukan Anda.');
     }
 

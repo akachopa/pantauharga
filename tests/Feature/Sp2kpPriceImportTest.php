@@ -5,11 +5,14 @@ namespace Tests\Feature;
 use App\Models\Commodity;
 use App\Models\MonitoringPoint;
 use App\Models\ReportItem;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class Sp2kpPriceImportTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_admin_prices_page_shows_sp2kp_crawl_action(): void
     {
         $response = $this->withSession(['simulated_user_id' => 1])->get('/prices');

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PolicyRuleGroup extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['version_id', 'parent_group_id', 'logic', 'sort_order'];
 
     public function version()

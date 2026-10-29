@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['region_id', 'code', 'name', 'address'];
 
     public function region()

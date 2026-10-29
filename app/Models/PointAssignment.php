@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PointAssignment extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['user_id', 'point_id', 'business_id', 'starts_on', 'ends_on', 'report_days'];
 
     protected $casts = [

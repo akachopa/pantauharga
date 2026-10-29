@@ -9,9 +9,9 @@ use App\Models\Market;
 use App\Models\MonitoringPoint;
 use App\Models\Report;
 use App\Models\ReportItem;
-use App\Models\ReportSeries;
 use App\Models\User;
 use App\PriceCsvImporter;
+use App\PriceReportRecorder;
 use App\Sp2kpClient;
 use App\Sp2kpPriceImporter;
 use Carbon\Carbon;
@@ -207,6 +207,9 @@ class PriceController extends Controller
         }
 
         $message = "Impor SP2KP selesai: {$result['imported']} baris baru, {$result['updated']} diperbarui.";
+        if ($result['verified'] > 0) {
+            $message .= " {$result['verified']} laporan langsung terverifikasi.";
+        }
         if ($result['skipped'] > 0) {
             $message .= ' '.$result['skipped'].' komoditi SP2KP tidak dipetakan.';
         }
@@ -219,7 +222,7 @@ class PriceController extends Controller
         ])->with('success', $message);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, PriceReportRecorder $priceReportRecorder)
     {
         $validated = $request->validate([
             'point_id' => 'required|exists:monitoring_points,id',
@@ -233,7 +236,7 @@ class PriceController extends Controller
             'evidence' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $userId = Auth::id() ?? 2;
+        $author = Auth::user() ?? User::query()->findOrFail(2);
         $sourceId = (int) ($validated['source_id'] ?? DataSource::query()->where('code', 'SRC_PETUGAS')->value('id') ?? 1);
         $status = $validated['status'] ?? 'submitted';
         $commodity = Commodity::findOrFail($validated['commodity_id']);
@@ -248,55 +251,27 @@ class PriceController extends Controller
             $evidencePath = $request->file('evidence')->store('report-evidence');
         }
 
-        DB::transaction(function () use ($validated, $userId, $sourceId, $status, $commodity, $evidencePath) {
-            $series = ReportSeries::create([
-                'point_id' => $validated['point_id'],
-                'observed_at' => $validated['observed_at'],
-            ]);
-
-            $report = Report::create([
-                'series_id' => $series->id,
-                'source_id' => $sourceId,
-                'status' => $status,
-                'submitted_by' => $userId,
-                'version_no' => 1,
-                'is_demo' => false,
-                'notes' => $validated['notes'] ?? ($status === 'draft' ? 'Draft input petugas' : 'Input mandiri petugas lapangan'),
-                'evidence_path' => $evidencePath,
-            ]);
-
-            $prevItem = DB::table('report_items as ri')
-                ->join('reports as r', 'r.id', '=', 'ri.report_id')
-                ->join('report_series as rs', 'rs.id', '=', 'r.series_id')
-                ->where('ri.commodity_id', $validated['commodity_id'])
-                ->where('rs.point_id', $validated['point_id'])
-                ->where('rs.observed_at', '<', $validated['observed_at'])
-                ->orderByDesc('rs.observed_at')
-                ->select('ri.price')
-                ->first();
-
-            $priceChangeAmount = 0;
-            $priceChangePct = 0;
-            if ($prevItem && $prevItem->price > 0) {
-                $priceChangeAmount = $validated['price'] - $prevItem->price;
-                $priceChangePct = round(($priceChangeAmount / $prevItem->price) * 100, 2);
-            }
-
-            ReportItem::create([
-                'report_id' => $report->id,
-                'commodity_id' => $validated['commodity_id'],
+        $report = $priceReportRecorder->record(
+            $author,
+            (int) $validated['point_id'],
+            $validated['observed_at'],
+            $sourceId,
+            $status,
+            [[
+                'commodity_id' => (int) $validated['commodity_id'],
                 'price' => $validated['price'],
                 'stock' => $validated['stock'],
-                'unit' => $commodity->base_unit ?? 'kg',
-                'price_change_pct' => $priceChangePct,
-                'price_change_amount' => $priceChangeAmount,
                 'notes' => $validated['notes'] ?? null,
-            ]);
-        });
+            ]],
+            $validated['notes'] ?? ($status === 'draft' ? 'Draft input petugas' : 'Input mandiri petugas lapangan'),
+            $evidencePath,
+        );
 
-        $message = $status === 'draft'
-            ? 'Draft harga dan stok berhasil disimpan.'
-            : 'Data harga dan stok berhasil dicatat dan disubmit!';
+        $message = match ($report->status) {
+            'draft' => 'Draft harga dan stok berhasil disimpan.',
+            'approved' => 'Data harga dan stok berhasil dicatat dan langsung terverifikasi.',
+            default => 'Data harga dan stok berhasil dicatat dan menunggu verifikasi.',
+        };
         if ($hetWarning) {
             $message .= ' Peringatan: harga menyimpang ≥15% dari harga acuan.';
         }
@@ -443,6 +418,9 @@ class PriceController extends Controller
         }
 
         $message = "Impor CSV selesai: {$result['imported']} baris masuk";
+        if ($result['verified'] > 0) {
+            $message .= ", {$result['verified']} langsung terverifikasi";
+        }
         if ($result['skipped'] > 0) {
             $message .= ", {$result['skipped']} baris dilewati";
         }

@@ -123,13 +123,18 @@ class PublicPriceInsightTest extends TestCase
         $this->assertTrue($this->build([])->isEmpty());
     }
 
-    public function test_home_renders_insight_section(): void
+    public function test_trend_page_renders_insights(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/tren');
 
         $response->assertOk();
         $response->assertViewHas('insights', fn (Collection $insights): bool => $insights->isNotEmpty());
         $response->assertSee('Insight Harga');
+    }
+
+    public function test_old_insight_url_redirects_to_trend_page(): void
+    {
+        $this->get('/insight')->assertRedirect('/tren')->assertStatus(301);
     }
 
     /**

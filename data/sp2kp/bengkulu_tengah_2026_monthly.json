@@ -1,0 +1,2064 @@
+{
+    "status": "success",
+    "message": "Success retrieving record",
+    "data": [
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 14125
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 13780
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 13750
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 14176
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 14281
+                }
+            ],
+            "kuantitas": 1,
+            "order": 101,
+            "satuan": "kg",
+            "variant": "Beras Medium",
+            "variant_id": 52
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 16500
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 16500
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 16050
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 16043
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 16500
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 16500
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 16500
+                }
+            ],
+            "kuantitas": 1,
+            "order": 102,
+            "satuan": "kg",
+            "variant": "Beras Premium",
+            "variant_id": 51
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 12000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 104,
+            "satuan": "kg",
+            "variant": "Beras SPHP Bulog",
+            "variant_id": 1
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 13000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 202,
+            "satuan": "kg",
+            "variant": "Kedelai Impor",
+            "variant_id": 48
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 43250
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 47222
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 37000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 37286
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 48688
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 50000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 42609
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 41316
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 53636
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 73750
+                }
+            ],
+            "kuantitas": 1,
+            "order": 301,
+            "satuan": "kg",
+            "variant": "Cabai Merah Keriting",
+            "variant_id": 2
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 37000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 41667
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 32500
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 32857
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 48125
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 49000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 41304
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 38421
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 48636
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 70250
+                }
+            ],
+            "kuantitas": 1,
+            "order": 302,
+            "satuan": "kg",
+            "variant": "Cabai Merah Besar",
+            "variant_id": 9
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 66750
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 74722
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 66500
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 49524
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 51522
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 56053
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 61136
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 77500
+                }
+            ],
+            "kuantitas": 1,
+            "order": 303,
+            "satuan": "kg",
+            "variant": "Cabai Rawit Merah",
+            "variant_id": 10
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 65750
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 53333
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 47000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 38333
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 49063
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 51250
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 46739
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 52632
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 54318
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 71250
+                }
+            ],
+            "kuantitas": 1,
+            "order": 304,
+            "satuan": "kg",
+            "variant": "Cabai Rawit Hijau",
+            "variant_id": 11
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 39800
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 40333
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 38800
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 42762
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 46813
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 44200
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 34565
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 30000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 29091
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 30000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 400,
+            "satuan": "kg",
+            "variant": "Bawang Merah",
+            "variant_id": 13
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 17150
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 18524
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 18500
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 18000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 501,
+            "satuan": "kg",
+            "variant": "Gula Pasir Curah",
+            "variant_id": 14
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 18833
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 18100
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 18524
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 18500
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 18000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 18000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 502,
+            "satuan": "kg",
+            "variant": "Gula Pasir Kemasan",
+            "variant_id": 15
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 20800
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 21000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 21000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 21524
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 22313
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 23000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 23000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 23000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 22318
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 22000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 602,
+            "satuan": "lt",
+            "variant": "Minyak Goreng Sawit Kemasan Premium",
+            "variant_id": 17
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 15700
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 15700
+                }
+            ],
+            "kuantitas": 1,
+            "order": 603,
+            "satuan": "lt",
+            "variant": "Minyakita",
+            "variant_id": 18
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 12200
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 13000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 700,
+            "satuan": "kg",
+            "variant": "Tepung Terigu",
+            "variant_id": 26
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 35900
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 39389
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 42750
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 35714
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 34375
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 33000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 31696
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 41263
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 40000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 37000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 800,
+            "satuan": "kg",
+            "variant": "Daging Ayam Ras",
+            "variant_id": 27
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 30620
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 26761
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 28540
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 28200
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 27400
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 26600
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 25861
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 26284
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 25600
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 25600
+                }
+            ],
+            "kuantitas": 1,
+            "order": 900,
+            "satuan": "kg",
+            "variant": "Telur Ayam Ras",
+            "variant_id": 25
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 140000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 140000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 146000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 158421
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 160000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 160000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1001,
+            "satuan": "kg",
+            "variant": "Daging Sapi Paha Belakang",
+            "variant_id": 19
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 140000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 140000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 146000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 150000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 158421
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 160000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 160000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1002,
+            "satuan": "kg",
+            "variant": "Daging Sapi Paha Depan",
+            "variant_id": 53
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 90000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 90000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 90000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 90000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 90000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 0
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 0
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 0
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 0
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 0
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1102,
+            "satuan": "kg",
+            "variant": "Daging Sapi Impor Beku",
+            "variant_id": 50
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 28700
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 25500
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 28000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 27048
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 24000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 25000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 26087
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 26632
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 30000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 30000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1203,
+            "satuan": "kg",
+            "variant": "Ikan Tongkol",
+            "variant_id": 20
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 3500
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 3500
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1400,
+            "satuan": "Bungkus",
+            "variant": "Mie Instan",
+            "variant_id": 42
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 39500
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 36944
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 36000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 34952
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 32750
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 35600
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 37783
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 33000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 30955
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 30000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1501,
+            "satuan": "kg",
+            "variant": "Bawang Putih Honan",
+            "variant_id": 38
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 16000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 16000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1700,
+            "satuan": "kg",
+            "variant": "Garam Halus",
+            "variant_id": 41
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 14000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 13222
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 13000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1800,
+            "satuan": "370gr",
+            "variant": "Susu Kental Manis",
+            "variant_id": 31
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 53000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 52222
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 52000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 52000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1801,
+            "satuan": "400gr",
+            "variant": "Susu Bubuk",
+            "variant_id": 32
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 43000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 43000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 1802,
+            "satuan": "400gr",
+            "variant": "Susu Bubuk Balita",
+            "variant_id": 33
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 15000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2000,
+            "satuan": "kg",
+            "variant": "Tempe Bungkus",
+            "variant_id": 36
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 10000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2100,
+            "satuan": "kg",
+            "variant": "Tahu Putih",
+            "variant_id": 35
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 80952
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 80000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 80000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2200,
+            "satuan": "kg",
+            "variant": "Udang Basah",
+            "variant_id": 40
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 10000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2300,
+            "satuan": "kg",
+            "variant": "Pisang Lokal",
+            "variant_id": 54
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 19286
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 18500
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 17000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 17000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2400,
+            "satuan": "kg",
+            "variant": "Jeruk Lokal",
+            "variant_id": 55
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 7550
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 12778
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 9500
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 7619
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 9625
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 12650
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 13522
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 6684
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 6591
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 8000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2500,
+            "satuan": "kg",
+            "variant": "Tomat",
+            "variant_id": 56
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 15000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 14444
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 12000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 13000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2601,
+            "satuan": "kg",
+            "variant": "Kentang Sedang",
+            "variant_id": 57
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 9600
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10600
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 8957
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 8000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 8000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 8000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2701,
+            "satuan": "kg",
+            "variant": "Sawi Hijau",
+            "variant_id": 5
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 9600
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 8316
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 8000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 8000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2800,
+            "satuan": "kg",
+            "variant": "Kangkung",
+            "variant_id": 58
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 8200
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 7300
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 9857
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 12217
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 13000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 13000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 2901,
+            "satuan": "kg",
+            "variant": "Ketimun Sedang",
+            "variant_id": 3
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 10400
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 10000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 10000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3100,
+            "satuan": "kg",
+            "variant": "Kacang Panjang",
+            "variant_id": 4
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 5000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 5000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 5000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 4048
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 4000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 4000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 4000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 4000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 4000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 4000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3200,
+            "satuan": "kg",
+            "variant": "Ketela Pohon",
+            "variant_id": 47
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 55000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 56944
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 60000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 60000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3300,
+            "satuan": "Ekor",
+            "variant": "Daging Ayam Kampung",
+            "variant_id": 43
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 54000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 54000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3400,
+            "satuan": "kg",
+            "variant": "Telur Ayam Kampung",
+            "variant_id": 44
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 40000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 40000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 40000
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 41048
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 41375
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 41300
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 41391
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 40789
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 45000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 45000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3501,
+            "satuan": "kg",
+            "variant": "Kacang Tanah",
+            "variant_id": 45
+        },
+        {
+            "daftarHarga": [
+                {
+                    "date": "2026-01",
+                    "harga": 30000
+                },
+                {
+                    "date": "2026-02",
+                    "harga": 30000
+                },
+                {
+                    "date": "2026-03",
+                    "harga": 30600
+                },
+                {
+                    "date": "2026-04",
+                    "harga": 30000
+                },
+                {
+                    "date": "2026-05",
+                    "harga": 30125
+                },
+                {
+                    "date": "2026-06",
+                    "harga": 32000
+                },
+                {
+                    "date": "2026-07",
+                    "harga": 32913
+                },
+                {
+                    "date": "2026-08",
+                    "harga": 35000
+                },
+                {
+                    "date": "2026-09",
+                    "harga": 35000
+                },
+                {
+                    "date": "2026-10",
+                    "harga": 35000
+                }
+            ],
+            "kuantitas": 1,
+            "order": 3502,
+            "satuan": "kg",
+            "variant": "Kacang Hijau",
+            "variant_id": 46
+        }
+    ]
+}

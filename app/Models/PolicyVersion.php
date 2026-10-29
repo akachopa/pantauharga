@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PolicyVersion extends Model
 {
     public $timestamps = false;
+
     protected $fillable = [
         'package_id',
         'version_no',

@@ -24,39 +24,86 @@ class PublicPriceController extends Controller
 
     public function index(Request $request): View
     {
-        $request->validate([
-            'date' => ['nullable', 'date'],
-            'kecamatan_id' => ['nullable', 'integer', 'exists:regions,id'],
-            'market_id' => ['nullable', 'integer', 'exists:markets,id'],
-            'commodity_id' => ['nullable', 'integer', 'exists:commodities,id'],
-            'nearby_commodity_id' => ['nullable', 'integer', 'exists:commodities,id'],
-            'lat' => ['nullable', 'numeric', 'between:-90,90'],
-            'lng' => ['nullable', 'numeric', 'between:-180,180'],
+        $filters = $this->filters($request);
+        $commodityCards = $this->cardsWithCitizenReports($filters);
+
+        return view('public.home', $this->sharedViewData($filters) + [
+            'commodityCards' => $commodityCards,
+            'insights' => $this->insightsFor($commodityCards, $filters)->take(3),
         ]);
+    }
 
-        $latestObserved = DB::table('report_series as rs')
-            ->join('reports as r', 'r.series_id', '=', 'rs.id')
-            ->where('r.status', 'approved')
-            ->max('rs.observed_at');
+    public function markets(Request $request): View
+    {
+        $filters = $this->filters($request);
 
-        $defaultDate = $latestObserved
-            ? Carbon::parse($latestObserved)->toDateString()
-            : now()->toDateString();
-        $selectedDate = $request->input('date') ?? $defaultDate;
-        $selectedKecamatan = $request->integer('kecamatan_id') ?: null;
-        $selectedMarket = $request->integer('market_id') ?: null;
-        $selectedCommodity = $request->integer('commodity_id') ?: null;
+        $nearbyCommodityId = $request->integer('nearby_commodity_id') ?: $filters['commodityId'];
+        if (! $nearbyCommodityId) {
+            $nearbyCommodityId = $this->approvedItemsQuery($filters['kecamatanId'], $filters['marketId'], null)
+                ->whereDate('rs.observed_at', $filters['date'])
+                ->orderBy('c.name')
+                ->value('c.id');
+        }
+
+        [$originLat, $originLng, $originSource] = $this->nearbyOrigin($request, $filters['marketId']);
+        $nearbyMarkets = $nearbyCommodityId
+            ? $this->nearbyMarkets($filters['date'], (int) $nearbyCommodityId, $originLat, $originLng)
+            : collect();
+
+        return view('public.markets', $this->sharedViewData($filters) + [
+            'nearbyMarkets' => $nearbyMarkets,
+            'mapData' => [
+                'geojsonUrl' => asset('geo/bengkulu-tengah-kecamatan.geojson'),
+                'markets' => $this->mapMarkets($filters['date'], $nearbyCommodityId ? (int) $nearbyCommodityId : null, $nearbyMarkets),
+                'origin' => ['lat' => $originLat, 'lng' => $originLng, 'source' => $originSource],
+                'regions' => $filters['kecamatans']->mapWithKeys(fn (Region $region): array => [mb_strtoupper($region->name) => $region->id]),
+                'selectedRegionId' => $filters['kecamatanId'],
+                'filterUrl' => route('public.markets', array_diff_key($request->query(), array_flip(['kecamatan_id', 'page']))),
+            ],
+            'nearbyCommodity' => $nearbyCommodityId ? $filters['commodities']->firstWhere('id', $nearbyCommodityId) : null,
+            'nearbyCommodityId' => $nearbyCommodityId,
+            'originSource' => $originSource,
+        ]);
+    }
+
+    public function trends(Request $request): View
+    {
+        $filters = $this->filters($request);
         $chartPeriod = (int) $request->get('period', 7);
         if (! in_array($chartPeriod, [7, 30], true)) {
             $chartPeriod = 7;
         }
 
-        $kecamatans = Region::where('parent_id', 1)->orderBy('name')->get();
-        $markets = Market::where('is_active', true)->orderBy('name')->get();
-        $commodities = Commodity::where('is_active', true)->orderBy('name')->get();
+        $endDate = Carbon::parse($filters['date']);
+        $startDate = $endDate->copy()->subDays($chartPeriod - 1);
+        $chartCommodityIds = $this->chartCommodityIds(
+            $startDate->toDateString(),
+            $endDate->toDateString(),
+            $filters['kecamatanId'],
+            $filters['marketId'],
+            $filters['commodityId'],
+        );
 
-        $priceItems = $this->approvedItemsQuery($selectedKecamatan, $selectedMarket, $selectedCommodity)
-            ->whereDate('rs.observed_at', $selectedDate)
+        $hasChartData = $chartCommodityIds !== [];
+        $commodityCards = $this->cardsWithCitizenReports($filters);
+
+        return view('public.trends', $this->sharedViewData($filters) + [
+            'chartPeriod' => $chartPeriod,
+            'hasChartData' => $hasChartData,
+            'priceChart' => $hasChartData
+                ? $this->priceInsight->trendSeries($startDate, $endDate, $chartCommodityIds, $filters['kecamatanId'], $filters['marketId'], true)
+                : ['days' => [], 'labels' => [], 'series' => [], 'yLabels' => [], 'maxPrice' => 0],
+            'highlights' => $this->highlights($commodityCards),
+            'insights' => $this->insightsFor($commodityCards, $filters),
+        ]);
+    }
+
+    public function table(Request $request): View
+    {
+        $filters = $this->filters($request);
+
+        $priceItems = $this->approvedItemsQuery($filters['kecamatanId'], $filters['marketId'], $filters['commodityId'])
+            ->whereDate('rs.observed_at', $filters['date'])
             ->select(
                 'ri.id as item_id',
                 'c.id as commodity_id',
@@ -75,63 +122,122 @@ class PublicPriceController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $lastObservedOnDate = $this->approvedItemsQuery($selectedKecamatan, $selectedMarket, $selectedCommodity)
-            ->whereDate('rs.observed_at', $selectedDate)
+        return view('public.table', $this->sharedViewData($filters) + [
+            'priceItems' => $priceItems,
+        ]);
+    }
+
+    public function report(Request $request): View
+    {
+        $filters = $this->filters($request);
+
+        return view('public.report', $this->sharedViewData($filters));
+    }
+
+    /**
+     * @return array{
+     *     date: string,
+     *     kecamatanId: ?int,
+     *     marketId: ?int,
+     *     commodityId: ?int,
+     *     query: array<string, mixed>,
+     *     hasActiveFilters: bool,
+     *     lastUpdated: ?Carbon,
+     *     kecamatans: Collection<int, Region>,
+     *     markets: Collection<int, Market>,
+     *     commodities: Collection<int, Commodity>
+     * }
+     */
+    private function filters(Request $request): array
+    {
+        $request->validate([
+            'date' => ['nullable', 'date'],
+            'kecamatan_id' => ['nullable', 'integer', 'exists:regions,id'],
+            'market_id' => ['nullable', 'integer', 'exists:markets,id'],
+            'commodity_id' => ['nullable', 'integer', 'exists:commodities,id'],
+            'nearby_commodity_id' => ['nullable', 'integer', 'exists:commodities,id'],
+            'lat' => ['nullable', 'numeric', 'between:-90,90'],
+            'lng' => ['nullable', 'numeric', 'between:-180,180'],
+        ]);
+
+        $latestObserved = DB::table('report_series as rs')
+            ->join('reports as r', 'r.series_id', '=', 'rs.id')
+            ->where('r.status', 'approved')
             ->max('rs.observed_at');
 
-        $endDate = Carbon::parse($selectedDate);
-        $startDate = $endDate->copy()->subDays($chartPeriod - 1);
-        $sparkStart = $endDate->copy()->subDays(6);
+        $date = $request->input('date')
+            ?? ($latestObserved ? Carbon::parse($latestObserved)->toDateString() : now()->toDateString());
+        $kecamatanId = $request->integer('kecamatan_id') ?: null;
+        $marketId = $request->integer('market_id') ?: null;
+        $commodityId = $request->integer('commodity_id') ?: null;
 
-        $chartCommodityIds = $this->chartCommodityIds(
-            $startDate->toDateString(),
-            $endDate->toDateString(),
-            $selectedKecamatan,
-            $selectedMarket,
-            $selectedCommodity,
-        );
+        $lastObservedOnDate = $this->approvedItemsQuery($kecamatanId, $marketId, $commodityId)
+            ->whereDate('rs.observed_at', $date)
+            ->max('rs.observed_at');
+        $lastObserved = $lastObservedOnDate ?? $latestObserved;
 
-        $hasChartData = $chartCommodityIds !== [];
-        $priceChart = $hasChartData
-            ? $this->priceInsight->trendSeries(
-                $startDate,
-                $endDate,
-                $chartCommodityIds,
-                $selectedKecamatan,
-                $selectedMarket,
-                true,
-            )
-            : [
-                'days' => [],
-                'labels' => [],
-                'series' => [],
-                'yLabels' => [],
-                'maxPrice' => 0,
-            ];
+        return [
+            'date' => $date,
+            'kecamatanId' => $kecamatanId,
+            'marketId' => $marketId,
+            'commodityId' => $commodityId,
+            'query' => array_filter(
+                $request->only(['date', 'kecamatan_id', 'market_id', 'commodity_id']),
+                fn ($value): bool => $value !== null && $value !== '',
+            ),
+            'hasActiveFilters' => $kecamatanId !== null || $marketId !== null || $commodityId !== null || $request->filled('date'),
+            'lastUpdated' => $lastObserved ? Carbon::parse($lastObserved) : null,
+            'kecamatans' => Region::where('parent_id', 1)->orderBy('name')->get(),
+            'markets' => Market::where('is_active', true)->orderBy('name')->get(),
+            'commodities' => Commodity::where('is_active', true)->orderBy('name')->get(),
+        ];
+    }
 
-        $commodityCards = $this->commodityCards(
-            $selectedDate,
-            $sparkStart,
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return array<string, mixed>
+     */
+    private function sharedViewData(array $filters): array
+    {
+        return [
+            'kecamatans' => $filters['kecamatans'],
+            'markets' => $filters['markets'],
+            'commodities' => $filters['commodities'],
+            'selectedDate' => $filters['date'],
+            'selectedKecamatan' => $filters['kecamatanId'],
+            'selectedMarket' => $filters['marketId'],
+            'selectedCommodity' => $filters['commodityId'],
+            'hasActiveFilters' => $filters['hasActiveFilters'],
+            'lastUpdated' => $filters['lastUpdated'],
+            'publicFilterQuery' => $filters['query'],
+            'shortDateLabel' => Carbon::parse($filters['date'])->translatedFormat('d M Y'),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function baseCommodityCards(array $filters): Collection
+    {
+        $endDate = Carbon::parse($filters['date']);
+
+        return $this->commodityCards(
+            $filters['date'],
+            $endDate->copy()->subDays(6),
             $endDate,
-            $selectedKecamatan,
-            $selectedMarket,
-            $selectedCommodity,
+            $filters['kecamatanId'],
+            $filters['marketId'],
+            $filters['commodityId'],
         );
-        $highlights = $this->highlights($commodityCards);
+    }
 
-        $nearbyCommodityId = $request->integer('nearby_commodity_id') ?: $selectedCommodity;
-        if (! $nearbyCommodityId) {
-            $nearbyCommodityId = $commodityCards->first()['id'] ?? null;
-        }
-
-        [$originLat, $originLng, $originSource] = $this->nearbyOrigin($request, $selectedMarket);
-        $nearbyMarkets = $nearbyCommodityId
-            ? $this->nearbyMarkets($selectedDate, (int) $nearbyCommodityId, $originLat, $originLng)
-            : collect();
-        $nearbyCommodity = $nearbyCommodityId
-            ? $commodities->firstWhere('id', $nearbyCommodityId)
-            : null;
-
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function cardsWithCitizenReports(array $filters): Collection
+    {
         $citizenReportCounts = CommunityPriceReport::query()
             ->whereDate('created_at', now()->toDateString())
             ->whereIn('status', ['pending', 'reviewed'])
@@ -139,57 +245,32 @@ class PublicPriceController extends Controller
             ->groupBy('commodity_id')
             ->pluck('total', 'commodity_id');
 
-        $commodityCards = $commodityCards->map(function (array $card) use ($citizenReportCounts): array {
+        return $this->baseCommodityCards($filters)->map(function (array $card) use ($citizenReportCounts): array {
             $card['citizen_report_count'] = (int) $citizenReportCounts->get($card['id'], 0);
 
             return $card;
         });
+    }
 
-        $insights = $this->publicPriceInsight->build(
+    /**
+     * @param  Collection<int, array<string, mixed>>  $commodityCards
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, array<string, mixed>>
+     */
+    private function insightsFor(Collection $commodityCards, array $filters): Collection
+    {
+        $endDate = Carbon::parse($filters['date']);
+
+        return $this->publicPriceInsight->build(
             $commodityCards,
             $this->dailyAverages(
                 $endDate->copy()->subDays(13),
                 $endDate,
                 $commodityCards->pluck('id')->all(),
-                $selectedKecamatan,
-                $selectedMarket,
+                $filters['kecamatanId'],
+                $filters['marketId'],
             ),
         );
-
-        $lastUpdated = $lastObservedOnDate
-            ? Carbon::parse($lastObservedOnDate)
-            : ($latestObserved ? Carbon::parse($latestObserved) : null);
-
-        $hasActiveFilters = $selectedKecamatan !== null
-            || $selectedMarket !== null
-            || $selectedCommodity !== null
-            || $request->filled('date')
-            || $chartPeriod !== 7;
-
-        return view('public.prices', [
-            'kecamatans' => $kecamatans,
-            'markets' => $markets,
-            'commodities' => $commodities,
-            'selectedDate' => $selectedDate,
-            'selectedKecamatan' => $selectedKecamatan,
-            'selectedMarket' => $selectedMarket,
-            'selectedCommodity' => $selectedCommodity,
-            'chartPeriod' => $chartPeriod,
-            'priceItems' => $priceItems,
-            'lastUpdated' => $lastUpdated,
-            'hasChartData' => $hasChartData,
-            'priceChart' => $priceChart,
-            'commodityCards' => $commodityCards,
-            'highlights' => $highlights,
-            'insights' => $insights,
-            'hasActiveFilters' => $hasActiveFilters,
-            'nearbyMarkets' => $nearbyMarkets,
-            'nearbyCommodity' => $nearbyCommodity,
-            'nearbyCommodityId' => $nearbyCommodityId,
-            'originSource' => $originSource,
-            'originLat' => $originLat,
-            'originLng' => $originLng,
-        ]);
     }
 
     private function approvedItemsQuery(?int $kecamatanId, ?int $marketId, ?int $commodityId): Builder
@@ -490,6 +571,45 @@ class PublicPriceController extends Controller
         }
 
         return [-3.745, 102.41, 'kabupaten'];
+    }
+
+    /**
+     * Active markets with coordinates, plus the approved average price of the chosen commodity.
+     *
+     * @param  Collection<int, array<string, mixed>>  $nearbyMarkets
+     * @return list<array{id: int, name: string, region: ?string, lat: float, lng: float, price: ?float, is_closest: bool, is_cheapest: bool}>
+     */
+    private function mapMarkets(string $selectedDate, ?int $commodityId, Collection $nearbyMarkets): array
+    {
+        $prices = $commodityId
+            ? $this->approvedItemsQuery(null, null, $commodityId)
+                ->whereDate('rs.observed_at', $selectedDate)
+                ->whereNotNull('mp.market_id')
+                ->groupBy('mp.market_id')
+                ->selectRaw('mp.market_id, AVG(ri.price) as avg_price')
+                ->pluck('avg_price', 'mp.market_id')
+            : collect();
+        $nearbyById = $nearbyMarkets->keyBy('id');
+
+        return DB::table('markets as m')
+            ->leftJoin('regions as reg', 'reg.id', '=', 'm.region_id')
+            ->where('m.is_active', true)
+            ->whereNotNull('m.latitude')
+            ->whereNotNull('m.longitude')
+            ->orderBy('m.name')
+            ->get(['m.id', 'm.name', 'm.latitude', 'm.longitude', 'reg.name as region_name'])
+            ->map(fn (object $market): array => [
+                'id' => (int) $market->id,
+                'name' => $market->name,
+                'region' => $market->region_name,
+                'lat' => (float) $market->latitude,
+                'lng' => (float) $market->longitude,
+                'price' => $prices->has($market->id) ? round((float) $prices->get($market->id)) : null,
+                'is_closest' => (bool) ($nearbyById->get((int) $market->id)['is_closest'] ?? false),
+                'is_cheapest' => (bool) ($nearbyById->get((int) $market->id)['is_cheapest'] ?? false),
+            ])
+            ->values()
+            ->all();
     }
 
     /**

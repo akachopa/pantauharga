@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReportSeries extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['point_id', 'observed_at'];
 
     protected $casts = [

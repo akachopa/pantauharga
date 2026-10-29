@@ -8,17 +8,21 @@ use App\Models\MonitoringPoint;
 use App\Models\Report;
 use App\Models\ReportItem;
 use App\Models\ReportSeries;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class PriceCsvImporter
 {
+    public function __construct(private PriceReportRecorder $priceReportRecorder) {}
+
     /**
-     * @return array{imported: int, skipped: int, errors: list<string>}
+     * @return array{imported: int, verified: int, skipped: int, errors: list<string>}
      */
     public function import(UploadedFile $file, int $userId): array
     {
+        $author = User::query()->find($userId);
         $handle = fopen($file->getRealPath(), 'r');
         if ($handle === false) {
             throw new RuntimeException('File CSV tidak dapat dibaca.');
@@ -32,11 +36,12 @@ class PriceCsvImporter
 
         $map = $this->headerMap($header);
         $imported = 0;
+        $verified = 0;
         $skipped = 0;
         $errors = [];
         $sourceId = (int) (DataSource::query()->where('code', 'SRC_PETUGAS')->value('id') ?? 1);
 
-        DB::transaction(function () use ($handle, $map, $userId, $sourceId, &$imported, &$skipped, &$errors): void {
+        DB::transaction(function () use ($handle, $map, $userId, $author, $sourceId, &$imported, &$verified, &$skipped, &$errors): void {
             $line = 1;
             while (($row = fgetcsv($handle)) !== false) {
                 $line++;
@@ -86,13 +91,17 @@ class PriceCsvImporter
                     'notes' => 'Impor CSV',
                 ]);
 
+                if ($author && $this->priceReportRecorder->approveOnEntry($report, $author)) {
+                    $verified++;
+                }
+
                 $imported++;
             }
         });
 
         fclose($handle);
 
-        return compact('imported', 'skipped', 'errors');
+        return compact('imported', 'verified', 'skipped', 'errors');
     }
 
     /**

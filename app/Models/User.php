@@ -65,6 +65,27 @@ class User extends Authenticatable
 
     public function hasRole(string $code): bool
     {
-        return $this->roles()->where('code', $code)->exists();
+        return $this->hasAnyRole([$code]);
+    }
+
+    /**
+     * @param  list<string>  $codes
+     */
+    public function hasAnyRole(array $codes): bool
+    {
+        return $this->roles->whereIn('code', $codes)->isNotEmpty();
+    }
+
+    /**
+     * Operators and administrators are the official input team, so their price input is verified on entry.
+     */
+    public function canSelfVerifyPrices(): bool
+    {
+        return $this->hasAnyRole(['operator', 'admin']);
+    }
+
+    public function homeRoute(): string
+    {
+        return $this->hasRole('mitra') ? route('mitra.dashboard') : route('dashboard');
     }
 }

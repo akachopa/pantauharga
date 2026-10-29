@@ -42,7 +42,7 @@ class PriceInsightTest extends TestCase
         $this->assertSame(8, count($chart['days']));
         $this->assertSame('2026-10-27', $chart['days'][6]);
         $this->assertNotSame('', $chart['series'][0]['points']);
-        $this->assertSame(49000.0, $chart['series'][0]['values'][6]);
+        $this->assertSame(55200.0, $chart['series'][0]['values'][6]);
     }
 
     public function test_regional_spread_compares_kecamatan_average_to_reference_price(): void
